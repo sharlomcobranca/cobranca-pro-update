@@ -2,6 +2,7 @@ import flet as ft
 import pandas as pd
 import threading
 import time
+import unicodedata
 
 def main(page: ft.Page):
     page.title = "Cobrança PRO"
@@ -63,18 +64,38 @@ def main(page: ft.Page):
         height=48
     )
 
+    def normalizar_texto(texto):
+        if not isinstance(texto, str):
+            return ""
+        nfkd = unicodedata.normalize('NFKD', texto)
+        return "".join([c for c in nfkd if not unicodedata.combining(c)]).strip().lower()
+
     def processar_arquivo(e: ft.FilePickerResultEvent):
         nonlocal dados_planilha, pagina_atual
         if e.files:
             file_path = e.files[0].path
             try:
                 if file_path.endswith('.csv'):
-                    df = pd.read_csv(file_path)
+                    try:
+                        df = pd.read_csv(file_path, encoding='utf-8')
+                    except UnicodeDecodeError:
+                        df = pd.read_csv(file_path, encoding='latin-1')
                 else:
                     df = pd.read_excel(file_path)
                 
-                df.columns = [c.strip() for c in df.columns]
-                dados_planilha = df.to_dict(orient="records")
+                if df.empty:
+                    raise Exception("O arquivo selecionado está vazio.")
+
+                # Padroniza as chaves do dicionário internamente para facilitar a busca
+                novo_registros = []
+                for _, row in df.iterrows():
+                    item_normalizado = {}
+                    for col in df.columns:
+                        col_limpa = normalizar_texto(str(col))
+                        item_normalizado[col_limpa] = row[col] if pd.notna(row[col]) else ""
+                    novo_registros.append(item_normalizado)
+
+                dados_planilha = novo_registros
                 pagina_atual = 1
 
                 page.snack_bar = ft.SnackBar(
@@ -85,6 +106,7 @@ def main(page: ft.Page):
                 page.update()
                 load_pagamentos()
             except Exception as ex:
+                dados_planilha = []
                 page.snack_bar = ft.SnackBar(
                     ft.Text(f"Erro ao ler arquivo: {str(ex)}", color=ft.colors.WHITE),
                     bgcolor="#EF4444"
@@ -153,7 +175,10 @@ def main(page: ft.Page):
                 status_color = "#EAB308"
                 status_text_ref.value = f"Status: {whatsapp_status}"
                 status_text_ref.color = status_color
-                page.update()
+                try:
+                    page.update()
+                except Exception:
+                    pass
             
             threading.Thread(target=background_task, daemon=True).start()
 
@@ -210,8 +235,9 @@ def main(page: ft.Page):
 
         dados_filtrados = []
         for item in dados_planilha:
-            resp = str(item.get('Responsável', item.get('Responsavel', ''))).lower()
-            dt = str(item.get('Data', '')).lower()
+            # Busca flexível por chaves normalizadas
+            resp = str(item.get('responsavel', item.get('responsável', ''))).lower()
+            dt = str(item.get('data', item.get('data de pagamento', ''))).lower()
             
             match_resp = filtro_responsavel_val.lower() in resp if filtro_responsavel_val else True
             match_data = filtro_data_val.lower() in dt if filtro_data_val else True
@@ -234,11 +260,11 @@ def main(page: ft.Page):
         linhas_tabela = []
         if dados_pagina:
             for item in dados_pagina:
-                cliente = str(item.get('Cliente', 'N/A'))
-                responsavel = str(item.get('Responsável', item.get('Responsavel', 'N/A')))
-                data_pag = str(item.get('Data', 'N/A'))
-                valor = str(item.get('Valor', 'N/A'))
-                status = str(item.get('Status', 'Pendente'))
+                cliente = str(item.get('cliente', item.get('nome', 'N/A')))
+                responsavel = str(item.get('responsavel', item.get('responsável', 'N/A')))
+                data_pag = str(item.get('data', item.get('data de pagamento', 'N/A')))
+                valor = str(item.get('valor', item.get('quantia', 'N/A')))
+                status = str(item.get('status', 'Pendente'))
 
                 linhas_tabela.append(
                     ft.Row([
@@ -405,10 +431,10 @@ def main(page: ft.Page):
         bgcolor="#18191D",
         on_change=nav_change,
         destinations=[
-            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="Dashboard"),
-            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="WhatsApp"),
-            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="Pagamentos"),
-            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="Configurações"),
+            ft.NavigationRailDestination(icon=ft.Icons.DASHBOARD_ROUNDED, label="Dashboard"),
+            ft.NavigationRailDestination(icon=ft.Icons.CHAT_ROUNDED, label="WhatsApp"),
+            ft.NavigationRailDestination(icon=ft.Icons.RECEIPT_LONG_ROUNDED, label="Pagamentos"),
+            ft.NavigationRailDestination(icon=ft.Icons.SETTINGS_ROUNDED, label="Configurações"),
         ],
         trailing=ft.Column([
             ft.Divider(color="#2B2D37"),
