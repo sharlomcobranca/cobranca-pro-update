@@ -113,8 +113,7 @@ def main(page: ft.Page):
                 page.snack_bar.open = True
                 page.update()
 
-    file_picker = ft.FilePicker()
-    file_picker.on_result = processar_arquivo
+    file_picker = ft.FilePicker(on_result=processar_arquivo)
     page.overlay.append(file_picker)
 
     def load_dashboard(e=None):
