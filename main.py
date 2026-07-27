@@ -1,6 +1,5 @@
 import flet as ft
 import pandas as pd
-import os
 import threading
 import time
 
@@ -16,21 +15,18 @@ def main(page: ft.Page):
 
     dados_planilha = []
     whatsapp_status = "Aguardando leitura do QR Code"
-    status_color = "#EAB308" # Amarelo
+    status_color = "#EAB308"
 
-    # Estados de paginação e filtro da tabela de pagamentos
     pagina_atual = 1
     itens_por_pagina = 10
     filtro_responsavel_val = ""
     filtro_data_val = ""
 
-    # Configurações do Supabase
     supabase_url_val = ""
     supabase_key_val = ""
 
     content_area = ft.Container(expand=True, padding=25, bgcolor="#16171B")
 
-    # --- FUNÇÃO PARA SALVAR CONFIGURAÇÕES ---
     def salvar_configuracoes(e):
         nonlocal supabase_url_val, supabase_key_val
         supabase_url_val = input_url.value
@@ -67,7 +63,6 @@ def main(page: ft.Page):
         height=48
     )
 
-    # --- FUNÇÃO PARA LER A PLANILHA ---
     def processar_arquivo(e: ft.FilePickerResultEvent):
         nonlocal dados_planilha, pagina_atual
         if e.files:
@@ -101,7 +96,6 @@ def main(page: ft.Page):
     file_picker.on_result = processar_arquivo
     page.overlay.append(file_picker)
 
-    # --- TELA 1: DASHBOARD ---
     def load_dashboard(e=None):
         content_area.content = ft.Column([
             ft.Text("Dashboard", size=24, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
@@ -126,14 +120,12 @@ def main(page: ft.Page):
             ft.Row([
                 ft.ElevatedButton(
                     "Iniciar Monitoramento Automático",
-                    icon=ft.icons.PLAY_ARROW,
                     bgcolor="#22C55E",
                     color=ft.colors.WHITE,
                     style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
                 ),
                 ft.ElevatedButton(
                     "Processar Planilha Manualmente",
-                    icon=ft.icons.FOLDER_OPEN,
                     bgcolor="#2B2D37",
                     color=ft.colors.WHITE,
                     on_click=lambda _: file_picker.pick_files(allow_multiple=False, allowed_extensions=["xlsx", "xls", "csv"]),
@@ -143,7 +135,6 @@ def main(page: ft.Page):
         ], scroll=ft.ScrollMode.AUTO, spacing=20)
         page.update()
 
-    # --- TELA 2: WHATSAPP ---
     def load_whatsapp(e=None):
         status_text_ref = ft.Text(f"Status: {whatsapp_status}", color=status_color, size=12, weight=ft.FontWeight.BOLD)
         
@@ -172,7 +163,6 @@ def main(page: ft.Page):
             
             ft.ElevatedButton(
                 "Gerar / Atualizar QR Code",
-                icon=ft.icons.REFRESH,
                 bgcolor="#1D4ED8",
                 color=ft.colors.WHITE,
                 on_click=atualizar_qr,
@@ -183,10 +173,11 @@ def main(page: ft.Page):
                 ft.Container(
                     content=ft.Column([
                         ft.Container(
-                            content=ft.Icon(ft.icons.QR_CODE_2, size=160, color=ft.colors.WHITE),
+                            content=ft.Text("QR CODE AQUI", color=ft.colors.BLACK, weight=ft.FontWeight.BOLD),
                             bgcolor=ft.colors.WHITE,
-                            padding=10,
-                            border_radius=8
+                            padding=40,
+                            border_radius=8,
+                            alignment=ft.alignment.center
                         ),
                         ft.Container(
                             content=status_text_ref,
@@ -200,32 +191,11 @@ def main(page: ft.Page):
                     content=ft.Column([
                         ft.Text("Como conectar:", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=15),
                         ft.Divider(color="#2B2D37"),
-                        ft.Row([
-                            ft.Icon(ft.icons.CHAT, color="#22C55E", size=20),
-                            ft.Column([
-                                ft.Text("1. Abra o WhatsApp", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=13),
-                                ft.Text("Abra o WhatsApp no seu celular.", color=ft.colors.GREY_400, size=11)
-                            ], spacing=2)
-                        ], spacing=12),
-                        ft.Row([
-                            ft.Icon(ft.icons.PHONE_ANDROID, color="#3B82F6", size=20),
-                            ft.Column([
-                                ft.Text("2. Aparelhos Conectados", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=13),
-                                ft.Text("Toque em Aparelhos Conectados.", color=ft.colors.GREY_400, size=11)
-                            ], spacing=2)
-                        ], spacing=12),
-                        ft.Row([
-                            ft.Icon(ft.icons.QR_CODE, color="#EAB308", size=20),
-                            ft.Column([
-                                ft.Text("3. Conectar um aparelho", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=13),
-                                ft.Text("Toque em Conectar um aparelho e escaneie.", color=ft.colors.GREY_400, size=11)
-                            ], spacing=2)
-                        ], spacing=12),
+                        ft.Text("1. Abra o WhatsApp no seu celular.", color=ft.colors.GREY_400, size=12),
+                        ft.Text("2. Vá em Aparelhos Conectados.", color=ft.colors.GREY_400, size=12),
+                        ft.Text("3. Toque em Conectar um aparelho e aponte para a tela.", color=ft.colors.GREY_400, size=12),
                         ft.Container(
-                            content=ft.Row([
-                                ft.Icon(ft.icons.LOCK, color="#3B82F6", size=14),
-                                ft.Text("Sua conexão é segura e criptografada de ponta a ponta.", color=ft.colors.GREY_400, size=10)
-                            ], spacing=8),
+                            content=ft.Text("Sua conexão é segura e criptografada.", color=ft.colors.GREY_400, size=10),
                             bgcolor="#121316", padding=10, border_radius=8
                         )
                     ], spacing=15),
@@ -235,7 +205,6 @@ def main(page: ft.Page):
         ], spacing=15, scroll=ft.ScrollMode.AUTO)
         page.update()
 
-    # --- TELA 3: PAGAMENTOS ---
     def load_pagamentos(e=None):
         nonlocal pagina_atual, filtro_responsavel_val, filtro_data_val
 
@@ -291,7 +260,6 @@ def main(page: ft.Page):
         txt_filtro_resp = ft.TextField(
             label="Filtrar por Responsável",
             value=filtro_responsavel_val,
-            prefix_icon=ft.icons.SEARCH,
             bgcolor="#121316",
             border_color="#2B2D37",
             border_radius=8,
@@ -304,7 +272,6 @@ def main(page: ft.Page):
         txt_filtro_data = ft.TextField(
             label="Filtrar por Data",
             value=filtro_data_val,
-            prefix_icon=ft.icons.CALENDAR_MONTH,
             bgcolor="#121316",
             border_color="#2B2D37",
             border_radius=8,
@@ -340,7 +307,6 @@ def main(page: ft.Page):
                     ft.Container(content=txt_filtro_data, expand=True),
                     ft.ElevatedButton(
                         "Limpar Filtros",
-                        icon=ft.icons.CLEAR,
                         bgcolor="#2B2D37",
                         color=ft.colors.WHITE,
                         on_click=lambda _: limpar_filtros()
@@ -369,7 +335,6 @@ def main(page: ft.Page):
                 ft.Row([
                     ft.ElevatedButton(
                         "Anterior",
-                        icon=ft.icons.CHEVRON_LEFT,
                         bgcolor="#2B2D37",
                         color=ft.colors.WHITE,
                         disabled=pagina_atual <= 1,
@@ -381,8 +346,6 @@ def main(page: ft.Page):
                     ),
                     ft.ElevatedButton(
                         "Próxima",
-                        icon=ft.icons.CHEVRON_RIGHT,
-                        icon_align=ft.IconAlign.END,
                         bgcolor="#2B2D37",
                         color=ft.colors.WHITE,
                         disabled=pagina_atual >= total_paginas,
@@ -401,7 +364,6 @@ def main(page: ft.Page):
         pagina_atual = 1
         load_pagamentos()
 
-    # --- TELA 4: CONFIGURAÇÕES ---
     def load_config(e=None):
         content_area.content = ft.Column([
             ft.Text("Configurações do Sistema", size=24, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
@@ -415,7 +377,6 @@ def main(page: ft.Page):
                     input_key,
                     ft.ElevatedButton(
                         "Salvar Configurações",
-                        icon=ft.icons.SAVE,
                         bgcolor="#22C55E",
                         color=ft.colors.WHITE,
                         on_click=salvar_configuracoes,
@@ -444,10 +405,10 @@ def main(page: ft.Page):
         bgcolor="#18191D",
         on_change=nav_change,
         destinations=[
-            ft.NavigationRailDestination(icon=ft.icons.DASHBOARD, label="Dashboard"),
-            ft.NavigationRailDestination(icon=ft.icons.CHAT, label="Conectar WhatsApp"),
-            ft.NavigationRailDestination(icon=ft.icons.PAYMENTS, label="Pagamentos"),
-            ft.NavigationRailDestination(icon=ft.icons.SETTINGS, label="Configurações"),
+            ft.NavigationRailDestination(label="Dashboard"),
+            ft.NavigationRailDestination(label="WhatsApp"),
+            ft.NavigationRailDestination(label="Pagamentos"),
+            ft.NavigationRailDestination(label="Configurações"),
         ],
         trailing=ft.Column([
             ft.Divider(color="#2B2D37"),
