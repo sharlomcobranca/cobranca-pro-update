@@ -405,10 +405,10 @@ def main(page: ft.Page):
         bgcolor="#18191D",
         on_change=nav_change,
         destinations=[
-            ft.NavigationRailDestination(label="Dashboard"),
-            ft.NavigationRailDestination(label="WhatsApp"),
-            ft.NavigationRailDestination(label="Pagamentos"),
-            ft.NavigationRailDestination(label="Configurações"),
+            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="Dashboard"),
+            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="WhatsApp"),
+            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="Pagamentos"),
+            ft.NavigationRailDestination(icon=ft.icons.CIRCLE, label="Configurações"),
         ],
         trailing=ft.Column([
             ft.Divider(color="#2B2D37"),
