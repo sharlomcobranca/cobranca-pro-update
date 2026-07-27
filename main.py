@@ -34,7 +34,7 @@ def main(page: ft.Page):
         supabase_key_val = input_key.value
 
         page.snack_bar = ft.SnackBar(
-            ft.Text("Configurações do Supabase salvas com sucesso!", color=ft.colors.WHITE),
+            ft.Text("Configurações do Supabase salvas com sucesso!", color="#FFFFFF"),
             bgcolor="#22C55E"
         )
         page.snack_bar.open = True
@@ -86,7 +86,6 @@ def main(page: ft.Page):
                 if df.empty:
                     raise Exception("O arquivo selecionado está vazio.")
 
-                # Padroniza as chaves do dicionário internamente para facilitar a busca
                 novo_registros = []
                 for _, row in df.iterrows():
                     item_normalizado = {}
@@ -99,7 +98,7 @@ def main(page: ft.Page):
                 pagina_atual = 1
 
                 page.snack_bar = ft.SnackBar(
-                    ft.Text(f"Planilha carregada com sucesso! {len(dados_planilha)} registros.", color=ft.colors.WHITE),
+                    ft.Text(f"Planilha carregada com sucesso! {len(dados_planilha)} registros.", color="#FFFFFF"),
                     bgcolor="#22C55E"
                 )
                 page.snack_bar.open = True
@@ -108,7 +107,7 @@ def main(page: ft.Page):
             except Exception as ex:
                 dados_planilha = []
                 page.snack_bar = ft.SnackBar(
-                    ft.Text(f"Erro ao ler arquivo: {str(ex)}", color=ft.colors.WHITE),
+                    ft.Text(f"Erro ao ler arquivo: {str(ex)}", color="#FFFFFF"),
                     bgcolor="#EF4444"
                 )
                 page.snack_bar.open = True
@@ -120,36 +119,36 @@ def main(page: ft.Page):
 
     def load_dashboard(e=None):
         content_area.content = ft.Column([
-            ft.Text("Dashboard", size=24, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+            ft.Text("Dashboard", size=24, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
             ft.Row([
                 ft.Container(
                     content=ft.Column([
-                        ft.Text("Total Arrecadado Hoje", color=ft.colors.GREY_400, size=12),
+                        ft.Text("Total Arrecadado Hoje", color="#9CA3AF", size=12),
                         ft.Text("R$ 4.580,50", color="#22C55E", size=22, weight=ft.FontWeight.BOLD)
                     ]),
                     bgcolor="#1E1F25", padding=20, border_radius=12, expand=True
                 ),
                 ft.Container(
                     content=ft.Column([
-                        ft.Text("Acumulado do Mês", color=ft.colors.GREY_400, size=12),
+                        ft.Text("Acumulado do Mês", color="#9CA3AF", size=12),
                         ft.Text("R$ 38.290,00", color="#3B82F6", size=22, weight=ft.FontWeight.BOLD)
                     ]),
                     bgcolor="#1E1F25", padding=20, border_radius=12, expand=True
                 ),
             ], spacing=15),
-            ft.Divider(height=10, color=ft.colors.TRANSPARENT),
-            ft.Text("Ações Rápidas", size=16, weight=ft.FontWeight.W_500, color=ft.colors.WHITE),
+            ft.Divider(height=10, color="transparent"),
+            ft.Text("Ações Rápidas", size=16, weight=ft.FontWeight.W_500, color="#FFFFFF"),
             ft.Row([
                 ft.ElevatedButton(
                     "Iniciar Monitoramento Automático",
                     bgcolor="#22C55E",
-                    color=ft.colors.WHITE,
+                    color="#FFFFFF",
                     style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
                 ),
                 ft.ElevatedButton(
                     "Processar Planilha Manualmente",
                     bgcolor="#2B2D37",
-                    color=ft.colors.WHITE,
+                    color="#FFFFFF",
                     on_click=lambda _: file_picker.pick_files(allow_multiple=False, allowed_extensions=["xlsx", "xls", "csv"]),
                     style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
                 ),
@@ -183,13 +182,13 @@ def main(page: ft.Page):
             threading.Thread(target=background_task, daemon=True).start()
 
         content_area.content = ft.Column([
-            ft.Text("Conexão com o WhatsApp", size=24, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
-            ft.Text("Escaneie o QR Code abaixo com o WhatsApp do seu celular.", color=ft.colors.GREY_400, size=13),
+            ft.Text("Conexão com o WhatsApp", size=24, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
+            ft.Text("Escaneie o QR Code abaixo com o WhatsApp do seu celular.", color="#9CA3AF", size=13),
             
             ft.ElevatedButton(
                 "Gerar / Atualizar QR Code",
                 bgcolor="#1D4ED8",
-                color=ft.colors.WHITE,
+                color="#FFFFFF",
                 on_click=atualizar_qr,
                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
             ),
@@ -198,8 +197,8 @@ def main(page: ft.Page):
                 ft.Container(
                     content=ft.Column([
                         ft.Container(
-                            content=ft.Text("QR CODE AQUI", color=ft.colors.BLACK, weight=ft.FontWeight.BOLD),
-                            bgcolor=ft.colors.WHITE,
+                            content=ft.Text("QR CODE AQUI", color="#000000", weight=ft.FontWeight.BOLD),
+                            bgcolor="#FFFFFF",
                             padding=40,
                             border_radius=8,
                             alignment=ft.alignment.center
@@ -214,13 +213,13 @@ def main(page: ft.Page):
                 
                 ft.Container(
                     content=ft.Column([
-                        ft.Text("Como conectar:", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=15),
+                        ft.Text("Como conectar:", weight=ft.FontWeight.BOLD, color="#FFFFFF", size=15),
                         ft.Divider(color="#2B2D37"),
-                        ft.Text("1. Abra o WhatsApp no seu celular.", color=ft.colors.GREY_400, size=12),
-                        ft.Text("2. Vá em Aparelhos Conectados.", color=ft.colors.GREY_400, size=12),
-                        ft.Text("3. Toque em Conectar um aparelho e aponte para a tela.", color=ft.colors.GREY_400, size=12),
+                        ft.Text("1. Abra o WhatsApp no seu celular.", color="#9CA3AF", size=12),
+                        ft.Text("2. Vá em Aparelhos Conectados.", color="#9CA3AF", size=12),
+                        ft.Text("3. Toque em Conectar um aparelho e aponte para a tela.", color="#9CA3AF", size=12),
                         ft.Container(
-                            content=ft.Text("Sua conexão é segura e criptografada.", color=ft.colors.GREY_400, size=10),
+                            content=ft.Text("Sua conexão é segura e criptografada.", color="#9CA3AF", size=10),
                             bgcolor="#121316", padding=10, border_radius=8
                         )
                     ], spacing=15),
@@ -235,7 +234,6 @@ def main(page: ft.Page):
 
         dados_filtrados = []
         for item in dados_planilha:
-            # Busca flexível por chaves normalizadas
             resp = str(item.get('responsavel', item.get('responsável', ''))).lower()
             dt = str(item.get('data', item.get('data de pagamento', ''))).lower()
             
@@ -268,10 +266,10 @@ def main(page: ft.Page):
 
                 linhas_tabela.append(
                     ft.Row([
-                        ft.Text(cliente, color=ft.colors.WHITE, expand=2),
-                        ft.Text(responsavel, color=ft.colors.WHITE, expand=2),
-                        ft.Text(data_pag, color=ft.colors.GREY_300, expand=2),
-                        ft.Text(valor, color=ft.colors.WHITE, expand=1),
+                        ft.Text(cliente, color="#FFFFFF", expand=2),
+                        ft.Text(responsavel, color="#FFFFFF", expand=2),
+                        ft.Text(data_pag, color="#D1D5DB", expand=2),
+                        ft.Text(valor, color="#FFFFFF", expand=1),
                         ft.Container(
                             content=ft.Text(status, color="#22C55E", size=12, weight=ft.FontWeight.BOLD),
                             bgcolor="#064E3B", padding=ft.padding.symmetric(horizontal=10, vertical=4), border_radius=6, alignment=ft.alignment.center, expand=1
@@ -280,7 +278,7 @@ def main(page: ft.Page):
                 )
         else:
             linhas_tabela.append(
-                ft.Text("Nenhum registro encontrado com os filtros atuais ou planilha vazia.", color=ft.colors.GREY_400, italic=True)
+                ft.Text("Nenhum registro encontrado com os filtros atuais ou planilha vazia.", color="#9CA3AF", italic=True)
             )
 
         txt_filtro_resp = ft.TextField(
@@ -325,7 +323,7 @@ def main(page: ft.Page):
             load_pagamentos()
 
         content_area.content = ft.Column([
-            ft.Text("Histórico de Pagamentos Processados", size=24, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+            ft.Text("Histórico de Pagamentos Processados", size=24, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
             
             ft.Container(
                 content=ft.Row([
@@ -334,7 +332,7 @@ def main(page: ft.Page):
                     ft.ElevatedButton(
                         "Limpar Filtros",
                         bgcolor="#2B2D37",
-                        color=ft.colors.WHITE,
+                        color="#FFFFFF",
                         on_click=lambda _: limpar_filtros()
                     )
                 ], spacing=15),
@@ -344,11 +342,11 @@ def main(page: ft.Page):
             ft.Container(
                 content=ft.Column([
                     ft.Row([
-                        ft.Text("Cliente", weight=ft.FontWeight.BOLD, color=ft.colors.GREY_400, expand=2),
-                        ft.Text("Responsável", weight=ft.FontWeight.BOLD, color=ft.colors.GREY_400, expand=2),
-                        ft.Text("Data", weight=ft.FontWeight.BOLD, color=ft.colors.GREY_400, expand=2),
-                        ft.Text("Valor", weight=ft.FontWeight.BOLD, color=ft.colors.GREY_400, expand=1),
-                        ft.Text("Status", weight=ft.FontWeight.BOLD, color=ft.colors.GREY_400, expand=1, text_align=ft.TextAlign.CENTER),
+                        ft.Text("Cliente", weight=ft.FontWeight.BOLD, color="#9CA3AF", expand=2),
+                        ft.Text("Responsável", weight=ft.FontWeight.BOLD, color="#9CA3AF", expand=2),
+                        ft.Text("Data", weight=ft.FontWeight.BOLD, color="#9CA3AF", expand=2),
+                        ft.Text("Valor", weight=ft.FontWeight.BOLD, color="#9CA3AF", expand=1),
+                        ft.Text("Status", weight=ft.FontWeight.BOLD, color="#9CA3AF", expand=1, text_align=ft.TextAlign.CENTER),
                     ]),
                     ft.Divider(color="#2B2D37"),
                     *linhas_tabela
@@ -357,23 +355,23 @@ def main(page: ft.Page):
             ),
 
             ft.Row([
-                ft.Text(f"Mostrando {inicio + 1 if dados_pagina else 0} a {min(fim, total_itens)} de {total_itens} registros", color=ft.colors.GREY_400, size=12),
+                ft.Text(f"Mostrando {inicio + 1 if dados_pagina else 0} a {min(fim, total_itens)} de {total_itens} registros", color="#9CA3AF", size=12),
                 ft.Row([
                     ft.ElevatedButton(
                         "Anterior",
                         bgcolor="#2B2D37",
-                        color=ft.colors.WHITE,
+                        color="#FFFFFF",
                         disabled=pagina_atual <= 1,
                         on_click=lambda _: mudar_pagina(-1)
                     ),
                     ft.Container(
-                        content=ft.Text(f"Página {pagina_atual} de {total_paginas}", color=ft.colors.WHITE, size=12, weight=ft.FontWeight.BOLD),
+                        content=ft.Text(f"Página {pagina_atual} de {total_paginas}", color="#FFFFFF", size=12, weight=ft.FontWeight.BOLD),
                         padding=10
                     ),
                     ft.ElevatedButton(
                         "Próxima",
                         bgcolor="#2B2D37",
-                        color=ft.colors.WHITE,
+                        color="#FFFFFF",
                         disabled=pagina_atual >= total_paginas,
                         on_click=lambda _: mudar_pagina(1)
                     ),
@@ -392,19 +390,19 @@ def main(page: ft.Page):
 
     def load_config(e=None):
         content_area.content = ft.Column([
-            ft.Text("Configurações do Sistema", size=24, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
-            ft.Text("Ajustes de conexão com o banco de dados Supabase e API do WhatsApp.", color=ft.colors.GREY_400, size=13),
+            ft.Text("Configurações do Sistema", size=24, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
+            ft.Text("Ajustes de conexão com o banco de dados Supabase e API do WhatsApp.", color="#9CA3AF", size=13),
             
             ft.Container(
                 content=ft.Column([
-                    ft.Text("Credenciais do Supabase", size=16, weight=ft.FontWeight.BOLD, color=ft.colors.WHITE),
+                    ft.Text("Credenciais do Supabase", size=16, weight=ft.FontWeight.BOLD, color="#FFFFFF"),
                     ft.Divider(color="#2B2D37"),
                     input_url,
                     input_key,
                     ft.ElevatedButton(
                         "Salvar Configurações",
                         bgcolor="#22C55E",
-                        color=ft.colors.WHITE,
+                        color="#FFFFFF",
                         on_click=salvar_configuracoes,
                         style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=8))
                     )
@@ -440,7 +438,7 @@ def main(page: ft.Page):
             ft.Divider(color="#2B2D37"),
             ft.Row([
                 ft.Container(bgcolor="#22C55E", width=8, height=8, border_radius=4),
-                ft.Text("Status: Active", color=ft.colors.GREY_400, size=12)
+                ft.Text("Status: Active", color="#9CA3AF", size=12)
             ], alignment=ft.MainAxisAlignment.START, spacing=8)
         ], alignment=ft.MainAxisAlignment.END, expand=True)
     )
