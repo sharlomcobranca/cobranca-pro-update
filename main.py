@@ -113,7 +113,9 @@ def main(page: ft.Page):
                 page.snack_bar.open = True
                 page.update()
 
-    file_picker = ft.FilePicker(on_result=processar_arquivo)
+    # Correção aplicada aqui: FilePicker criado vazio e o on_result atribuído por propriedade
+    file_picker = ft.FilePicker()
+    file_picker.on_result = processar_arquivo
     page.overlay.append(file_picker)
     page.update()
 
