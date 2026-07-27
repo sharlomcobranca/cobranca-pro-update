@@ -97,7 +97,6 @@ def main(page: ft.Page):
                 page.snack_bar.open = True
                 page.update()
 
-    # CORREÇÃO APLICADA AQUI:
     file_picker = ft.FilePicker()
     file_picker.on_result = processar_arquivo
     page.overlay.append(file_picker)
