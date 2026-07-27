@@ -201,7 +201,7 @@ def main(page: ft.Page):
                         ft.Text("Como conectar:", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=15),
                         ft.Divider(color="#2B2D37"),
                         ft.Row([
-                            ft.Icon(ft.icons.MARK_CHAT_UNREAD, color="#22C55E", size=20),
+                            ft.Icon(ft.icons.CHAT, color="#22C55E", size=20),
                             ft.Column([
                                 ft.Text("1. Abra o WhatsApp", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=13),
                                 ft.Text("Abra o WhatsApp no seu celular.", color=ft.colors.GREY_400, size=11)
@@ -215,7 +215,7 @@ def main(page: ft.Page):
                             ], spacing=2)
                         ], spacing=12),
                         ft.Row([
-                            ft.Icon(ft.icons.QR_CODE_SCANNER, color="#EAB308", size=20),
+                            ft.Icon(ft.icons.QR_CODE, color="#EAB308", size=20),
                             ft.Column([
                                 ft.Text("3. Conectar um aparelho", weight=ft.FontWeight.BOLD, color=ft.colors.WHITE, size=13),
                                 ft.Text("Toque em Conectar um aparelho e escaneie.", color=ft.colors.GREY_400, size=11)
@@ -291,7 +291,7 @@ def main(page: ft.Page):
         txt_filtro_resp = ft.TextField(
             label="Filtrar por Responsável",
             value=filtro_responsavel_val,
-            prefix_icon=ft.icons.PERSON_SEARCH,
+            prefix_icon=ft.icons.SEARCH,
             bgcolor="#121316",
             border_color="#2B2D37",
             border_radius=8,
@@ -444,10 +444,10 @@ def main(page: ft.Page):
         bgcolor="#18191D",
         on_change=nav_change,
         destinations=[
-            ft.NavigationRailDestination(icon=ft.icons.DASHBOARD_OUTLINED, selected_icon=ft.icons.DASHBOARD, label="Dashboard"),
-            ft.NavigationRailDestination(icon=ft.icons.CHAT_BUBBLE_OUTLINE, selected_icon=ft.icons.CHAT_BUBBLE, label="Conectar WhatsApp"),
-            ft.NavigationRailDestination(icon=ft.icons.PAYMENTS_OUTLINED, selected_icon=ft.icons.PAYMENTS, label="Pagamentos"),
-            ft.NavigationRailDestination(icon=ft.icons.SETTINGS_OUTLINED, selected_icon=ft.icons.SETTINGS, label="Configurações"),
+            ft.NavigationRailDestination(icon=ft.icons.DASHBOARD, label="Dashboard"),
+            ft.NavigationRailDestination(icon=ft.icons.CHAT, label="Conectar WhatsApp"),
+            ft.NavigationRailDestination(icon=ft.icons.PAYMENTS, label="Pagamentos"),
+            ft.NavigationRailDestination(icon=ft.icons.SETTINGS, label="Configurações"),
         ],
         trailing=ft.Column([
             ft.Divider(color="#2B2D37"),
